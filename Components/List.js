@@ -1,80 +1,39 @@
 import React, { Component } from 'react';
 import { StyleSheet , View ,Text} from 'react-native'
 import AddItem from './AddItem'
-import { SwipeListView} from 'react-native-swipe-list-view';
+import { SwipeListView } from 'react-native-swipe-list-view';
 import { Button  } from 'react-native-paper';
-import ModifyItem from './ModifyItem'
 
-class List extends Component{
-
-    state = {
-        visiblemodify : false,
-        value : '',
-    }
-
-    cancelhandle = () =>
-    {
-        this.setState({visiblemodify : false});
-    }
-
-    modifypress = (new_value) =>
-    {
-        for(let i = 0;i<this.props.list.length ; i++)
-        {
-            if(this.props.list[i].value === this.state.value)
-            {
-                this.props.list[i].value = new_value;
-            }
-        }
-        this.setState({visiblemodify : false});
-    }
-
-
-    render()
-    {
-        return(
-            <React.Fragment>
-            <AddItem handleaddpress = {this.props.handleaddpress}/>
-            <View style = {styles.pending}>
-                <Text>Pending {this.props.removeduplicate(this.props.list).length} Tasks : </Text>
-            </View>
-            <View>
-                <SwipeListView
-                    data={this.props.removeduplicate(this.props.list)}
-                    renderItem={ (data) => (
-                        <View style={styles.rowFront}>
-                            <Text>{data.item.value}</Text>
-                        </View>
-                    )}
-                    renderHiddenItem={ (data) => (
-                        <View style={styles.rowBack}>
-                            <Button mode="outlined" style = {styles.btn} onPress={this.props.handlelistpress.bind(this, data.item.key)}>
-                                Delete
-                            </Button>
-                            <Button mode="outlined" style = {styles.btn} onPress={
-                                () => {
-                                this.state.value = data.item.value
-                                this.setState({value : data.item.value})
-                                this.setState({visiblemodify : true})
-                            }}>
-                                Modify
-                            </Button>
-                        </View>
-                    )}
-                    leftOpenValue={100}
-                    rightOpenValue = {-100}
-                    />
-                <ModifyItem
-                visible = {this.state.visiblemodify} 
-                value = {this.state.value}
-                cancelhandle = {this.cancelhandle}
-                modifypress = {this.modifypress}
-                />
-            </View>
-            </React.Fragment>
-        )
-    }
-}
+const List = props => (
+    <>
+        <AddItem handleaddpress = {props.handleaddpress}/>
+        <View style = {styles.pending}>
+            <Text>Pending {props.removeduplicate(props.list).length} Tasks : </Text>
+        </View>
+        <View>
+            <SwipeListView
+                data={props.removeduplicate(props.list)}
+                renderItem={ (data) => (
+                    <View style={styles.rowFront}>
+                        <Text>{data.item.value}</Text>
+                    </View>
+                )}
+                renderHiddenItem={ (data) => (
+                    <View style={styles.rowBack}>
+                        <Button mode="outlined" style = {styles.btn} onPress={props.handleItemDelete.bind(this, data.item.key)}>
+                            Delete
+                        </Button>
+                        <Button mode="outlined" style = {styles.btn} onPress={() => props.handleModifyOpen(data.item.value, data.item.key)}>
+                            Modify
+                        </Button>
+                    </View>
+                )}
+                leftOpenValue={100}
+                rightOpenValue = {-100}
+            />
+        </View>
+    </>
+)
 
 export default List;
 
@@ -111,7 +70,12 @@ const styles = StyleSheet.create({
         height: 50,
     },
     btn:{
-        margin : -10,
+        fontSize: 30,
+        height: 50,
+        width: 100,
+        color: "red",
+        display: "flex",
+        alignItems: "center",
+        justifyContent: "center"
     }
-  })
-  
+})

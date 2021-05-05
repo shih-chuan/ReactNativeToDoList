@@ -1,46 +1,31 @@
-import React, { Component } from 'react';
+import React, { useState } from 'react';
 import { TextInput , Button  } from 'react-native-paper';
 import { StyleSheet , View, Modal} from 'react-native'
 
+const ModifyItem = (props) => {
 
-
-class ModifyItem extends Component{
-
-    state = {
-        new_value : '',
-    }
-
-    handlevalue =(e) =>
-    {
-        this.setState({new_value : e})
-    }
-    
-    render()
-    {
-        return(
-            <Modal visible = {this.props.visible} animationType = {'fade'}>
-                <View style = {styles.mainview}>
-                    <TextInput
+    return(
+        <Modal visible = {props.visible} animationType = {'fade'}>
+            <View style = {styles.mainview}>
+                <TextInput
                     autoFocus           
                     label='Modify'
                     style = {styles.textinput}
                     mode = 'outlined'
-                    value = {this.state.new_value}
-                    placeholder = {this.props.value}
-                    onChangeText ={this.handlevalue}
-                    />
-                    <View style ={styles.btnview}>
-                        <Button mode="outlined" style = {styles.btn} onPress={this.props.modifypress.bind(this , this.state.new_value)}>
-                            Modify
-                        </Button>
-                        <Button mode="outlined" style = {styles.btn} onPress={this.props.cancelhandle}>
-                            Cancel
-                        </Button>
-                    </View>
+                    value = {props.value}
+                    onChangeText ={props.onChanged}
+                />
+                <View style ={styles.btnview}>
+                    <Button mode="outlined" style = {styles.btn} onPress={props.modifypress}>
+                        Modify
+                    </Button>
+                    <Button mode="outlined" style = {styles.btn} onPress={props.cancelhandle}>
+                        Cancel
+                    </Button>
                 </View>
-            </Modal>
-        )
-    }
+            </View>
+        </Modal>
+    )
 }
 
 export default ModifyItem;
@@ -56,13 +41,11 @@ const styles = StyleSheet.create({
         marginBottom : 10,
     },
     btn : {
-        flex : 1,
+        flex : 1
     },
     btnview : {
         flexDirection : "row",
         justifyContent : "space-evenly",
         alignItems : "center",
     }
-  })
-  
-  
+})

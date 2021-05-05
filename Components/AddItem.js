@@ -1,16 +1,10 @@
-import React, { Component } from 'react';
+import React from 'react';
+
 import { Button  } from 'react-native-paper';
+const AddItem = (props) => (
+    <Button mode="outlined" onPress = {props.handleaddpress}>
+        Add New Task
+    </Button>
+);
 
-
-class AddItem extends Component{
-    render()
-    {
-        return(
-            <Button mode="outlined" onPress = {this.props.handleaddpress}>
-                Add New Task
-            </Button>
-        )
-    }
-}
-
-export default AddItem
+export default AddItem;
